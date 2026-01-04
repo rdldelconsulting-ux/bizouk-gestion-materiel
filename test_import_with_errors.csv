@@ -1,0 +1,6 @@
+Nom,Référence,Catégorie,Description
+Enceinte JBL,BZK-100,Sonorisation,Matériel valide
+,BZK-101,Sonorisation,Nom manquant - devrait être rejeté
+Micro sans ref,,Sonorisation,Référence manquante - devrait être rejeté
+"Câble XLR, 20m",BZK-102,Accessoires,"Câble avec virgule dans le nom, devrait fonctionner"
+Projecteur OK,BZK-103,Éclairage,Matériel valide
