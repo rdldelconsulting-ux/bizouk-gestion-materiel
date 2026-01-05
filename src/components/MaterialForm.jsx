@@ -6,13 +6,14 @@ function MaterialForm({ material, onSubmit, onClose }) {
     name: material?.name || '',
     reference: material?.reference || '',
     category: material?.category || 'Sonorisation',
+    region: material?.region || 'Guadeloupe',
     description: material?.description || ''
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!formData.name || !formData.reference) {
-      alert('Le nom et la référence sont obligatoires')
+    if (!formData.name || !formData.reference || !formData.region) {
+      alert('Le nom, la référence et la région sont obligatoires')
       return
     }
     onSubmit(formData)
@@ -75,6 +76,29 @@ function MaterialForm({ material, onSubmit, onClose }) {
               <option value="Structure">Structure</option>
               <option value="Électricité">Électricité</option>
               <option value="Accessoires">Accessoires</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Région *
+            </label>
+            <select
+              value={formData.region}
+              onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+              className="w-full bg-black border-2 border-bizouk-gold rounded-lg px-4 py-3 text-bizouk-gold focus:outline-none focus:border-bizouk-gold-dark"
+            >
+              <option value="Guadeloupe">Guadeloupe</option>
+              <option value="Martinique">Martinique</option>
+              <option value="Guyane">Guyane</option>
+              <option value="Réunion">Réunion</option>
+              <option value="Mayotte">Mayotte</option>
+              <option value="Nouvelle-Calédonie">Nouvelle-Calédonie</option>
+              <option value="Polynésie Française">Polynésie Française</option>
+              <option value="Saint-Martin">Saint-Martin</option>
+              <option value="Saint-Barthélemy">Saint-Barthélemy</option>
+              <option value="Wallis-et-Futuna">Wallis-et-Futuna</option>
+              <option value="Saint-Pierre-et-Miquelon">Saint-Pierre-et-Miquelon</option>
             </select>
           </div>
 

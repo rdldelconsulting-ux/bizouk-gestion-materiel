@@ -24,11 +24,21 @@ function App() {
   const [activeView, setActiveView] = useState('list')
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [filterRegion, setFilterRegion] = useState('all')
 
   useEffect(() => {
     const stored = localStorage.getItem('bizouk_materials')
     if (stored) {
-      setMaterials(JSON.parse(stored))
+      const parsedMaterials = JSON.parse(stored)
+
+      // Migration : Ajouter région par défaut aux matériaux sans région
+      const migratedMaterials = parsedMaterials.map(material => ({
+        ...material,
+        region: material.region || 'Guadeloupe'
+      }))
+
+      setMaterials(migratedMaterials)
+      localStorage.setItem('bizouk_materials', JSON.stringify(migratedMaterials))
     }
   }, [])
 
@@ -41,6 +51,7 @@ function App() {
       id: Date.now().toString(),
       ...material,
       status: 'available',
+      region: material.region || 'Guadeloupe',
       assignedTo: null,
       assignedLocation: null,
       hsHistory: [],
@@ -120,6 +131,7 @@ function App() {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       ...material,
       status: 'available',
+      region: material.region || 'Guadeloupe',
       assignedTo: null,
       assignedLocation: null,
       hsHistory: [],
@@ -140,8 +152,9 @@ function App() {
   const filteredMaterials = materials.filter(m => {
     const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          m.reference.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesFilter = filterStatus === 'all' || m.status === filterStatus
-    return matchesSearch && matchesFilter
+    const matchesStatus = filterStatus === 'all' || m.status === filterStatus
+    const matchesRegion = filterRegion === 'all' || m.region === filterRegion
+    return matchesSearch && matchesStatus && matchesRegion
   })
 
   const allHSHistory = materials
@@ -162,12 +175,12 @@ function App() {
               <ExportButton
                 materials={materials}
                 filteredMaterials={filteredMaterials}
-                filterActive={searchTerm !== '' || filterStatus !== 'all'}
+                filterActive={searchTerm !== '' || filterStatus !== 'all' || filterRegion !== 'all'}
               />
               <QRCodePrintAll
                 materials={materials}
                 filteredMaterials={filteredMaterials}
-                filterActive={searchTerm !== '' || filterStatus !== 'all'}
+                filterActive={searchTerm !== '' || filterStatus !== 'all' || filterRegion !== 'all'}
               />
               <button
                 onClick={() => setShowScanner(true)}
@@ -291,6 +304,24 @@ function App() {
                 <option value="available">Disponible</option>
                 <option value="assigned">Assigné</option>
                 <option value="hs">H.S</option>
+              </select>
+              <select
+                value={filterRegion}
+                onChange={(e) => setFilterRegion(e.target.value)}
+                className="bg-bizouk-black-light border-2 border-bizouk-gold rounded-lg px-4 py-3 text-bizouk-gold focus:outline-none focus:border-bizouk-gold-dark"
+              >
+                <option value="all">Toutes les régions</option>
+                <option value="Guadeloupe">Guadeloupe</option>
+                <option value="Martinique">Martinique</option>
+                <option value="Guyane">Guyane</option>
+                <option value="Réunion">Réunion</option>
+                <option value="Mayotte">Mayotte</option>
+                <option value="Nouvelle-Calédonie">Nouvelle-Calédonie</option>
+                <option value="Polynésie Française">Polynésie Française</option>
+                <option value="Saint-Martin">Saint-Martin</option>
+                <option value="Saint-Barthélemy">Saint-Barthélemy</option>
+                <option value="Wallis-et-Futuna">Wallis-et-Futuna</option>
+                <option value="Saint-Pierre-et-Miquelon">Saint-Pierre-et-Miquelon</option>
               </select>
             </div>
 

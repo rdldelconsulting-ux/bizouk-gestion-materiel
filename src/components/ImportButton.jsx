@@ -84,12 +84,14 @@ function ImportButton({ materials, onImport }) {
     const getName = () => row['Nom'] || row['nom'] || row['Name'] || row['name'] || ''
     const getReference = () => row['Référence'] || row['Reference'] || row['Ref'] || row['reference'] || row['ref'] || ''
     const getCategory = () => row['Catégorie'] || row['Category'] || row['Categorie'] || row['category'] || 'Sonorisation'
+    const getRegion = () => row['Région'] || row['Region'] || row['region'] || 'Guadeloupe'
     const getDescription = () => row['Description'] || row['description'] || ''
 
     return {
       name: getName(),
       reference: getReference(),
       category: getCategory(),
+      region: getRegion(),
       description: getDescription()
     }
   }
@@ -103,6 +105,10 @@ function ImportButton({ materials, onImport }) {
 
     if (!material.reference || material.reference.trim() === '') {
       errors.push(`Ligne ${lineNumber}: La référence est obligatoire`)
+    }
+
+    if (!material.region || material.region.trim() === '') {
+      errors.push(`Ligne ${lineNumber}: La région est obligatoire`)
     }
 
     // Vérifier les doublons avec les matériels existants
@@ -158,8 +164,8 @@ function ImportButton({ materials, onImport }) {
   }
 
   const downloadTemplate = () => {
-    const headers = ['Nom', 'Référence', 'Catégorie', 'Description']
-    const exampleRow = ['Enceinte JBL PRX815W', 'BZK-001', 'Sonorisation', 'Enceinte active 15 pouces']
+    const headers = ['Nom', 'Référence', 'Catégorie', 'Région', 'Description']
+    const exampleRow = ['Enceinte JBL PRX815W', 'BZK-001', 'Sonorisation', 'Guadeloupe', 'Enceinte active 15 pouces']
 
     const csvContent = [
       headers.join(','),
@@ -308,11 +314,12 @@ function ImportButton({ materials, onImport }) {
                   Le fichier CSV doit contenir les colonnes suivantes :
                 </p>
                 <div className="bg-black rounded p-3 font-mono text-xs text-blue-300">
-                  Nom, Référence, Catégorie, Description
+                  Nom, Référence, Catégorie, Région, Description
                 </div>
                 <p className="text-xs text-blue-300 mt-2">
-                  • Nom et Référence sont obligatoires<br />
+                  • Nom, Référence et Région sont obligatoires<br />
                   • Catégorie par défaut : Sonorisation<br />
+                  • Région par défaut : Guadeloupe<br />
                   • Les matériels importés auront le statut "Disponible"
                 </p>
               </div>

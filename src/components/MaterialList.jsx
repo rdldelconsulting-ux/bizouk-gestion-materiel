@@ -38,7 +38,17 @@ function MaterialList({ materials, onEdit, onDelete, onAssign, onMarkAvailable, 
             <div className="flex-1">
               <h3 className="text-xl font-bold mb-1">{material.name}</h3>
               <p className="text-sm opacity-70">Réf: {material.reference}</p>
-              <p className="text-xs mt-1 text-bizouk-gold-dark">{material.category}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <p className="text-xs text-bizouk-gold-dark">{material.category}</p>
+                {material.region && (
+                  <>
+                    <span className="text-xs opacity-50">•</span>
+                    <span className="text-xs px-2 py-0.5 bg-bizouk-gold/20 border border-bizouk-gold rounded-full text-bizouk-gold">
+                      {material.region}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
             {getStatusBadge(material.status)}
           </div>

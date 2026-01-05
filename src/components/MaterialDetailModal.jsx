@@ -52,7 +52,17 @@ function MaterialDetailModal({ material, onClose, onEdit, onAssign, onMarkAvaila
             <div className="flex-1">
               <h3 className="text-3xl font-bold mb-2">{material.name}</h3>
               <p className="text-lg opacity-70">Réf: {material.reference}</p>
-              <p className="text-sm text-bizouk-gold-dark mt-1">{material.category}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <p className="text-sm text-bizouk-gold-dark">{material.category}</p>
+                {material.region && (
+                  <>
+                    <span className="text-sm opacity-50">•</span>
+                    <span className="text-sm px-3 py-1 bg-bizouk-gold/20 border border-bizouk-gold rounded-full text-bizouk-gold font-semibold">
+                      {material.region}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
             {getStatusBadge(material.status)}
           </div>
